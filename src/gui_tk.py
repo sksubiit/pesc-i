@@ -124,16 +124,6 @@ class ChessGUI:
                 color = colors[(rank + file) % 2]
                 self.canvas.create_rectangle(x0, y0, x0 + self.square_size, y0 + self.square_size, fill=color, outline="")
 
-        # Highlight previous move (blue)
-        if self.board.move_stack:
-            last_move = self.board.peek()
-            for sq in [last_move.from_square, last_move.to_square]:
-                file = chess.square_file(sq)
-                rank = chess.square_rank(sq)
-                x0 = self.margin + file * self.square_size
-                y0 = self.margin + (7 - rank) * self.square_size
-                self.canvas.create_rectangle(x0, y0, x0 + self.square_size, y0 + self.square_size, fill="#89CFF0", outline="") # Light blue
-
         # Highlight suggested move (green)
         if self.suggested_move:
             for sq in [self.suggested_move.from_square, self.suggested_move.to_square]:
