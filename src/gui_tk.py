@@ -44,6 +44,7 @@ class ChessGUI:
         self.board = chess.Board()
         self.selected_square = None
         self.suggested_move = None
+        self.legal_moves_for_selected = []  # Add this line to store legal moves
 
         # Engine (created on demand)
         self.engine = None
@@ -124,6 +125,15 @@ class ChessGUI:
                 color = colors[(rank + file) % 2]
                 self.canvas.create_rectangle(x0, y0, x0 + self.square_size, y0 + self.square_size, fill=color, outline="")
 
+        # Highlight legal moves (yellow)
+        for move in self.legal_moves_for_selected:
+            sq = move.to_square
+            file = chess.square_file(sq)
+            rank = chess.square_rank(sq)
+            x0 = self.margin + file * self.square_size
+            y0 = self.margin + (7 - rank) * self.square_size
+            self.canvas.create_rectangle(x0, y0, x0 + self.square_size, y0 + self.square_size, fill="#FFFF99", outline="") # Light yellow
+
         # Highlight suggested move (green)
         if self.suggested_move:
             for sq in [self.suggested_move.from_square, self.suggested_move.to_square]:
@@ -132,6 +142,14 @@ class ChessGUI:
                 x0 = self.margin + file * self.square_size
                 y0 = self.margin + (7 - rank) * self.square_size
                 self.canvas.create_rectangle(x0, y0, x0 + self.square_size, y0 + self.square_size, fill="#90EE90", outline="") # Light green
+
+        # Highlight selected piece (orange)
+        if self.selected_square is not None:
+            file = chess.square_file(self.selected_square)
+            rank = chess.square_rank(self.selected_square)
+            x0 = self.margin + file * self.square_size
+            y0 = self.margin + (7 - rank) * self.square_size
+            self.canvas.create_rectangle(x0, y0, x0 + self.square_size, y0 + self.square_size, fill="#FFA500", outline="") # Orange
 
         # draw pieces (with margin offset)
         for square in chess.SQUARES:
@@ -175,6 +193,9 @@ class ChessGUI:
             piece = self.board.piece_at(sq)
             if piece and piece.color == self.board.turn:
                 self.selected_square = sq
+                # Get all legal moves for this piece
+                self.legal_moves_for_selected = [move for move in self.board.legal_moves if move.from_square == sq]
+                self.draw_board()
         else:
             promotion = None
             if self.board.piece_type_at(self.selected_square) == chess.PAWN and chess.square_rank(sq) in (0, 7):
@@ -184,6 +205,7 @@ class ChessGUI:
                 self.board.push(move)
                 self.move_list.insert(tk.END, self.board.peek().uci())
                 self.selected_square = None
+                self.legal_moves_for_selected = []  # Clear legal moves
                 self.suggested_move = None # Clear suggestion after move
                 self.draw_board()
                 self.root.update()
@@ -194,11 +216,14 @@ class ChessGUI:
             else:
                 # click destination invalid; clear selection
                 self.selected_square = None
+                self.legal_moves_for_selected = []  # Clear legal moves
+                self.draw_board()
 
     def new_game(self):
         self.board.reset()
         self.move_list.delete(0, tk.END)
         self.selected_square = None
+        self.legal_moves_for_selected = []  # Clear legal moves
         self.suggested_move = None
         self.draw_board()
 
@@ -213,12 +238,12 @@ class ChessGUI:
             self.engine_vs_engine_running = False
 
     def undo(self):
-        # undo last two ply if possible (for human vs engine convenience)
-        if len(self.board.move_stack) >= 1:
-            self.board.pop()
+        # undo last move (one ply)
         if len(self.board.move_stack) >= 1:
             self.board.pop()
         self.move_list.delete(0, tk.END)
+        self.selected_square = None
+        self.legal_moves_for_selected = []  # Clear legal moves
         self.suggested_move = None
         # rebuild move list
         temp = chess.Board()
