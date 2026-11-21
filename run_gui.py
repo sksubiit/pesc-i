@@ -1,11 +1,6 @@
-"""Launcher for the GUI.
-"""
+"""Launcher for the PESC-I Chess GUI."""
 
-from src import gui_tk
-
-
-def main():
-    gui_tk.main()
+from src.gui.gui_tk import main
 
 
 if __name__ == "__main__":

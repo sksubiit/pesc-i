@@ -1,15 +1,21 @@
-# Byte-compiled / caches
+# Python / environments
 __pycache__/
 *.py[cod]
 *.egg-info/
-
-# Virtual environments (also ignore any local env names)
-myenv/
 .venv/
-.env/
 venv/
+myenv/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+
+# Local credentials / preferences
+.env
+.env.*
+!.env.example
 .envrc
 
-# Editor/OS
+# Editors / OS
 .vscode/
 .DS_Store
