@@ -139,6 +139,38 @@ The service must support **Chat Completions** with `model`, `messages`,
 `max_tokens`, and `temperature`. APIs that require another protocol or different
 parameters need an adapter; selecting a provider doesn't make all APIs compatible.
 
+Use the following base URLs with **Remote / OpenAI-compatible**. Enter the API
+key issued by that provider and choose a model available to your account.
+Do not append `/chat/completions`; the app adds that path automatically.
+
+| Provider | Base URL | Compatibility notes |
+| --- | --- | --- |
+| OpenAI | `https://api.openai.com/v1` | Default remote URL; choose a model that accepts the request parameters above. |
+| Google Gemini / AI Studio | `https://generativelanguage.googleapis.com/v1beta/openai/` | Use a Gemini API key and Google's OpenAI-compatible endpoint. |
+| Groq | `https://api.groq.com/openai/v1` | Use a Groq API key and a supported chat model. |
+| Mistral | `https://api.mistral.ai/openai/v1` | Dedicated OpenAI-compatible endpoint; currently documented as public preview. |
+| Anthropic / Claude | `https://api.anthropic.com/v1/` | Conditional compatibility; see below. |
+
+See the provider documentation for [Google Gemini](https://aistudio.google.com/docs/openai),
+[Groq](https://console.groq.com/docs/openai),
+[Mistral](https://docs.mistral.ai/inference/conversations/chat-completion), and
+[Anthropic](https://platform.claude.com/docs/en/cli-sdks-libraries/libraries/openai-sdk).
+These are configuration references, not a claim that every provider/model has
+been tested with PESC-I.
+
+The current remote client uses raw HTTP with bearer authentication, rather than
+a provider-specific SDK. Anthropic documents its compatibility layer for official
+OpenAI SDKs; some Anthropic keys also require an `anthropic-workspace-id` header,
+which this GUI does not currently support. A base URL alone is therefore not a
+guarantee that Claude requests will work.
+
+Model discovery can fail independently of chat generation. If **Find available
+models** fails, you can still enter an exact model ID manually. Model-specific
+parameters and response formats may require changes to the client.
+
+Keep **Ollama** selected for Ollama's native API and **LM Studio** for its local
+server. Use the remote option for the cloud providers above.
+
 You can supply the remote key through the masked field or `PESC_I_API_KEY` in the
 launching shell. Keys are kept in memory and are never written to preferences.
 Move facts and Stockfish scores are sent to the selected endpoint. Remote calls
@@ -158,6 +190,32 @@ For Ollama, see its [network configuration guide](https://docs.ollama.com/faq).
 Only expose your model server to networks you trust.
 
 ## About explanation quality
+
+**The current prompts are basic, somewhat vague, and experimental. Do not expect
+expert chess analysis from the LLM commentary.** Quality depends on the prompt,
+the supplied context, and the model—not just model size or whether it runs locally.
+
+Brief and Detailed currently use the same move facts and almost the same prompt:
+
+| Mode | Requested response | Maximum generated tokens |
+| --- | --- | ---: |
+| Brief | 1–2 clear, friendly sentences | 256 |
+| Detailed | 3–4 clear, friendly sentences | 512 |
+
+Detailed does not currently request a separate, deeper analysis. Both modes
+receive move facts, evaluations before/after, and a short Stockfish continuation;
+they do not receive the full board position, game history, or the best alternative
+before the move. A model may produce similar or identical text in both modes, and
+the requested sentence count is not enforced.
+
+Increasing the request timeout only gives the server longer to respond. It does
+not increase the token limit or ask for better analysis. Length settings are
+captured when a move is played and apply to that move's new explanation.
+
+The prompt is built in [commentator.py](src/voice/commentator.py), while
+[providers.py](src/voice/providers.py) sends the request and handles the response.
+Stockfish's numerical evaluation and legal continuation are separate from the
+model's interpretation.
 
 A language model can sound confident while being wrong. Smaller models are
 particularly fond of finding imaginary forks. PESC-I supplies concrete move facts,
