@@ -3,21 +3,15 @@
 import chess
 import chess.engine
 import os
-import shutil
 import threading
 from dataclasses import dataclass
 from typing import Optional, List
 
 
 def stockfish_path() -> str:
-    """Prefer an explicit path, then system Stockfish, then the bundled Linux binary."""
-    return (
-        os.environ.get("STOCKFISH_PATH")
-        or shutil.which("stockfish")
-        or ("/usr/games/stockfish" if os.path.isfile("/usr/games/stockfish") else None)
-        or os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "..", "..", "stockfish", "stockfish")
-        )
+    """Use an explicit override or this checkout's sole native engine."""
+    return os.environ.get("STOCKFISH_PATH") or os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "..", "stockfish", "stockfish")
     )
 
 
@@ -68,6 +62,11 @@ class StockfishEngine:
         """Start the engine process (idempotent)."""
         with self._lock:
             if self._engine is None:
+                if not os.path.isfile(self.path):
+                    raise FileNotFoundError(
+                        "Stockfish is missing. Run bash scripts/install_stockfish19.sh "
+                        "or set STOCKFISH_PATH to an explicit executable."
+                    )
                 self._engine = chess.engine.SimpleEngine.popen_uci(self.path)
 
     def stop(self) -> None:
@@ -83,6 +82,12 @@ class StockfishEngine:
     @property
     def is_running(self) -> bool:
         return self._engine is not None
+
+    @property
+    def name(self) -> str:
+        self.start()
+        with self._lock:
+            return self._engine.id.get("name", "Unknown engine")
 
     # -- configuration ----------------------------------------------------
 

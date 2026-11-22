@@ -12,5 +12,6 @@ case "${1:-}" in
     --recreate) python3 -m venv --clear .venv ;;
     *) echo "Usage: bash scripts/setup.sh [--recreate]" >&2; exit 2 ;;
 esac
+python3 scripts/install_stockfish.py
 .venv/bin/python -m pip install -e .
 echo "Ready. Run: source .venv/bin/activate && pesc-i"

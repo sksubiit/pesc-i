@@ -1,0 +1,62 @@
+name: Deploy web branch to GitHub Pages
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      pages: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    outputs:
+      source_sha: ${{ steps.source.outputs.sha }}
+    steps:
+      - name: Check out browser source from web
+        uses: actions/checkout@v6
+        with:
+          ref: web
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Record exact web revision
+        id: source
+        run: |
+          source_sha="$(git rev-parse HEAD)"
+          printf 'sha=%s\n' "$source_sha" >> "$GITHUB_OUTPUT"
+          printf 'Browser source: [%s](https://github.com/%s/commit/%s)\n' "$source_sha" "$GITHUB_REPOSITORY" "$source_sha" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - run: npm ci --include=dev --ignore-scripts --no-audit --no-fund
+      - run: npm run build:web
+      - run: npm run test:web
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: web
+          retention-days: 1
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy tested browser artifact
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Record deployed source
+        env:
+          SOURCE_SHA: ${{ needs.build.outputs.source_sha }}
+        run: |
+          printf 'Deployed web revision: `%s`\n' "$SOURCE_SHA" >> "$GITHUB_STEP_SUMMARY"

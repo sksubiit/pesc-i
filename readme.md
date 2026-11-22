@@ -1,4 +1,4 @@
-# PESC-I
+# PESC-I desktop
 
 ### Good moves. Better questions.
 
@@ -10,6 +10,13 @@ and a short explanation.
 Stockfish does the chess. Your chosen language model puts words around it.
 No model server or API key is required to play.
 
+This is the **main branch: the desktop application**. The separate
+[web branch](https://github.com/sksubiit/pesc-i/tree/web) contains the browser-only
+Stockfish self-play demo. The desktop app does not require Node.js or a web host.
+
+Maintainers can publish the web branch using the deployment workflow kept on main;
+see [deployment](docs/deployment.md) and [development](docs/development.md).
+
 ![PESC-I board with Stockfish analysis](docs/board.png)
 
 ## Start playing
@@ -18,15 +25,17 @@ Python 3.10+ and a graphical desktop are required. On Ubuntu / WSL:
 
 ```bash
 sudo apt update
-sudo apt install python3-venv python3-tk stockfish fonts-dejavu-core
+sudo apt install python3-venv python3-tk fonts-dejavu-core
+git clone --depth 1 --branch main https://github.com/sksubiit/pesc-i.git
 cd pesc-i
 bash scripts/setup.sh
 source .venv/bin/activate
 pesc-i
 ```
 
-Clone this repository first if you haven't already. Run these commands in your
-Linux / WSL terminal. WSL needs WSLg (GUI support); SSH and headless terminals need
+Run these commands in a Linux / WSL terminal. For a fork, replace the repository
+URL with your fork's URL. The shallow clone avoids downloading old binary history.
+WSL needs WSLg (GUI support); SSH and headless terminals need
 a graphical display. You can also launch with `python run_gui.py`.
 
 The setup script installs the app into a project-local `.venv`. To rebuild it:
@@ -40,20 +49,30 @@ pesc-i
 `--recreate` clears this checkout's `.venv`, including packages you installed there.
 It leaves the repository and your saved app preferences alone.
 
-Stockfish is resolved in this order:
+The setup script installs the official **Stockfish 19 Linux x86-64 universal**
+executable at `stockfish/stockfish`. It verifies the release archive and executable
+against pinned SHA-256 values, checks UCI startup, and replaces the engine atomically.
+The native executable is local-only and ignored by Git; it is not a system install.
+The first setup needs internet access for the approximately 78 MiB release download.
 
-1. The executable named by `STOCKFISH_PATH`.
-2. A system installation (`stockfish` on PATH or `/usr/games/stockfish`).
-3. The legacy bundled Linux x86-64 binary in `stockfish/stockfish`.
-
-Prefer the system package. On another platform, install Tk and a compatible
-Stockfish executable, create a venv with `python -m venv .venv`, install with
-`python -m pip install -e .`, and set `STOCKFISH_PATH` if needed. For example:
+To install or verify the engine separately:
 
 ```bash
-export STOCKFISH_PATH=/absolute/path/to/stockfish
+bash scripts/install_stockfish19.sh
+```
+
+The GUI uses `stockfish/stockfish` by default. It does not automatically choose
+an engine from PATH or `/usr/games`. An explicit `STOCKFISH_PATH` still overrides
+the default, for example on a platform other than Linux x86-64:
+
+```bash
+export STOCKFISH_PATH=/absolute/path/to/your/stockfish
 pesc-i
 ```
+
+Check the resolved engine with `python -m scripts.doctor` inside the venv.
+The browser's Stockfish 19 Lite WASM is a separate web dependency and does not
+replace or install the native desktop engine.
 
 ## At the board
 
@@ -265,10 +284,11 @@ Code is split into `src/engine` (Stockfish), `src/voice` (facts and provider cli
 and `src/gui` (desktop layout and game flow). `run_gui.py` is a convenience launcher.
 The old `src/gui_tk.py` import remains a compatibility shim.
 
-The legacy bundled Stockfish identifies itself as 17.1. Stockfish is GPLv3 software;
-see [its license](stockfish/COPYING.txt) and [upstream source](https://github.com/official-stockfish/Stockfish/tree/sf_17.1).
-Use the upstream distribution with corresponding source and license notices when
-redistributing engine binaries.
+The locally installed Stockfish is GPLv3 software. Its official license and author
+notices are retained in `stockfish/COPYING.txt` and `stockfish/AUTHORS`.
+[Release provenance](stockfish/RELEASE.json) records the verified sf_19 artifact,
+checksums, and [corresponding upstream source](https://github.com/official-stockfish/Stockfish/tree/sf_19).
+Native executables and backups are excluded from Git.
 
 ## License
 

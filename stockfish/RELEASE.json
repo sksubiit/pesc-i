@@ -1,0 +1,10 @@
+{
+  "version": "19",
+  "platform": "linux-x86-64-universal",
+  "release": "https://github.com/official-stockfish/Stockfish/releases/tag/sf_19",
+  "archive_url": "https://github.com/official-stockfish/Stockfish/releases/download/sf_19/stockfish-linux-x86-64-universal.tar.gz",
+  "archive_sha256": "9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f",
+  "executable_sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+  "source_url": "https://github.com/official-stockfish/Stockfish/tree/sf_19",
+  "license": "GPL-3.0"
+}

@@ -9,7 +9,7 @@ It does not relicense third-party software or remove its license obligations.
 
 ## python-chess / chess
 
-The desktop app and broadcast generator import python-chess, licensed under
+The desktop app imports python-chess, licensed under
 GPL-3.0-or-later. The BSD license of original project code is GPL-compatible;
 distribution of a combined application must also satisfy the applicable GPL terms.
 
@@ -18,15 +18,16 @@ distribution of a combined application must also satisfy the applicable GPL term
 
 ## Stockfish
 
-Stockfish is a separate UCI engine under GPLv3. The existing bundled Linux binary
-identifies itself as Stockfish 17.1. Its license is in stockfish/COPYING.txt.
+The native desktop engine is the official Stockfish 19 Linux x86-64 universal
+release, licensed under GPLv3. The verified installer keeps it locally at
+`stockfish/stockfish`; the executable is not tracked or redistributed by this repo's
+current tree. Its GPL license and author notices are retained alongside it.
 
-- Upstream: https://github.com/official-stockfish/Stockfish
-- Version source: https://github.com/official-stockfish/Stockfish/tree/sf_17.1
+- Official release: https://github.com/official-stockfish/Stockfish/releases/tag/sf_19
+- Corresponding source: https://github.com/official-stockfish/Stockfish/tree/sf_19
+- Artifact provenance and SHA-256 values: stockfish/RELEASE.json
+- Native installer: scripts/install_stockfish.py
 
-A version tag alone does not establish that it is the exact corresponding source
-for an arbitrary prebuilt binary. Before redistributing the bundled binary, verify
-its provenance and supply the corresponding source/build material required by GPLv3,
-or obtain Stockfish separately through the operating-system package manager.
-PESC-I's BSD license does not apply to the Stockfish binary.
-
+If redistributing an engine binary separately, preserve the GPL notices and provide
+the corresponding source/build material required by GPLv3. The BSD license of
+original PESC-I code does not relicense Stockfish.

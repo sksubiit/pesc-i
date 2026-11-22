@@ -15,6 +15,7 @@ try:
     import chess
 
     result = engine.get_best_move(chess.Board(), time_limit=0.1)
+    print("Engine version:", engine.name)
     print("Engine ready:", result.move.uci())
 finally:
     engine.stop()
