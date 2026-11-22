@@ -1,4 +1,5 @@
 # PESC-I
+
 ### Good moves. Better questions.
 
 A desktop chess board with **Stockfish analysis** and optional **LLM explanations**.
@@ -88,11 +89,11 @@ Open **Commentary setup**, choose a provider, select a discovered model (or type
 exact ID), and click **Apply commentary settings**. Settings apply to the next move.
 The active provider is displayed separately from the settings being edited.
 
-| Provider | Base URL | Model discovery |
-| --- | --- | --- |
-| Engine notes (offline) | None | None needed |
-| LM Studio | `http://localhost:1234/v1` | `GET /v1/models` |
-| Ollama | `http://localhost:11434` | `GET /api/tags` |
+| Provider                   | Base URL                                            | Model discovery                       |
+| -------------------------- | --------------------------------------------------- | ------------------------------------- |
+| Engine notes (offline)     | None                                                | None needed                           |
+| LM Studio                  | `http://localhost:1234/v1`                        | `GET /v1/models`                    |
+| Ollama                     | `http://localhost:11434`                          | `GET /api/tags`                     |
 | Remote / OpenAI-compatible | Your provider's API base, usually ending in `/v1` | `GET /models` relative to that base |
 
 Local providers are checked when selected. **Find available models** refreshes the
@@ -210,3 +211,16 @@ The legacy bundled Stockfish identifies itself as 17.1. Stockfish is GPLv3 softw
 see [its license](stockfish/COPYING.txt) and [upstream source](https://github.com/official-stockfish/Stockfish/tree/sf_17.1).
 Use the upstream distribution with corresponding source and license notices when
 redistributing engine binaries.
+
+## License
+
+Original PESC-I code and assets use [BSD-3-Clause](LICENSE), allowing
+commercial use subject to its license-notice conditions. A repository credit is
+appreciated; it does not replace preserving the required notices.
+[Third-party notices](THIRD_PARTY_NOTICES.md) describe Stockfish and python-chess,
+which retain their GPL licenses.
+
+The desktop API key field is session-only. Apply does not save the key to disk.
+For the remote provider, `PESC_I_API_KEY` may be supplied by the launching process.
+The app does not automatically load `.env` files. Keep persistent secrets outside
+the repository, for example in an OS credential store or private launcher.
