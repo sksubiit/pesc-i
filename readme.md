@@ -14,6 +14,11 @@ This is the **main branch: the desktop application**. The separate
 [web branch](https://github.com/sksubiit/pesc-i/tree/web) contains the browser-only
 Stockfish self-play demo. The desktop app does not require Node.js or a web host.
 
+**[Watch Stockfish vs Stockfish in your browser](https://sksubiit.github.io/pesc-i/).**
+The demo is hosted on GitHub Pages and deployed through GitHub Actions.
+Each visitor's browser runs its own live game; Pause or close the page to stop it.
+The README links to the interactive board; it cannot run the game itself.
+
 Maintainers can publish the web branch using the deployment workflow kept on main;
 see [deployment](docs/deployment.md) and [development](docs/development.md).
 
@@ -254,6 +259,51 @@ notes. The board's evaluation always comes from Stockfish.
 Evaluations and move-loss estimates depend on the search budget; they are not
 certified move grades. Increase the engine time for a steadier analysis.
 “Voice” currently means written commentary, not synthesized audio.
+
+## Desktop and web side by side
+
+Git worktrees let you keep both branches open in separate folders while sharing
+one repository's history and remotes:
+
+```text
+pesc-i/       main — desktop app, .venv, native Stockfish
+pesc-i-web/   web  — browser app, node_modules, generated browser assets
+```
+
+From a desktop checkout, create the web worktree once:
+
+```bash
+cd pesc-i
+git fetch origin web:refs/remotes/origin/web
+git worktree add --track -b web ../pesc-i-web origin/web
+git worktree list
+```
+
+These commands also work after the shallow clone above. They assume the web branch
+exists on the remote named `origin`; replace `origin` if you use another remote
+name, such as `upstream`. If a local `web` branch already exists, use
+`git worktree add ../pesc-i-web web` instead of the `--track -b` command.
+If both folders already appear in `git worktree list`, use them directly.
+
+Run the desktop from `pesc-i/` using its venv. In another terminal, run the browser
+edition with Node.js 20+:
+
+```bash
+cd pesc-i-web
+npm ci --include=dev --ignore-scripts --no-audit --no-fund
+npm run build:web
+npm start
+```
+
+Open the URL printed by the launcher. Run dependency installation and the build
+on first setup and after relevant dependency or build changes; `npm start` serves
+the built files locally.
+
+Each folder has its own working files and staging area. Commit desktop changes
+from `pesc-i/` on main and browser changes from `pesc-i-web/` on web.
+Keep these product branches separate rather than merging them wholesale.
+The deployment workflow stays on main and publishes the web branch.
+See [development](docs/development.md) and [deployment](docs/deployment.md) for details.
 
 ## Troubleshooting and development
 

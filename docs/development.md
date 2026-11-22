@@ -47,18 +47,24 @@ local mock HTTP servers, not paid API calls.
 ## Parallel local development
 
 Use separate checkouts or Git worktrees so desktop and browser dependencies do
-not get mixed. From an existing desktop checkout:
+not get mixed. From a desktop checkout, fetch the web branch explicitly; this
+also works with the README's single-branch shallow clone:
 
 ```bash
-git fetch origin
+git fetch origin web:refs/remotes/origin/web
+git worktree add --track -b web ../pesc-i-web origin/web
+git worktree list
+```
+
+If a local web branch already exists, replace the worktree-add command with:
+
+```bash
 git worktree add ../pesc-i-web web
 ```
 
-If web exists only on the remote:
-
-```bash
-git worktree add --track -b web ../pesc-i-web origin/web
-```
+If both worktrees are already listed, use the existing folders directly.
+Each worktree has its own files, checked-out branch, and staging area while sharing
+Git history and remotes.
 
 Replace `origin` with the remote name used for your fork if necessary. The web
 README contains its own build/test instructions. Keep `.venv/` and the native
