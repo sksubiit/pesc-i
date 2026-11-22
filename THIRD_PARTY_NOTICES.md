@@ -1,32 +1,32 @@
-# Licensing scope and third-party notices
+# Third-party notices — browser edition
 
-The root BSD-3-Clause license covers original PESC-I code and original project
-assets, to the extent their contributors hold the relevant rights. It permits
-commercial use and redistribution subject to its notice and disclaimer conditions.
-A repository link is appreciated; it does not replace the required license notices.
+The [BSD-3-Clause license](LICENSE) covers original PESC-I code and assets.
+It permits commercial use subject to its notice and disclaimer conditions.
+It does not relicense third-party software.
 
-It does not relicense third-party software or remove its license obligations.
+## Stockfish.js / Stockfish
 
-## python-chess / chess
+The browser build uses `stockfish@19.0.1`, Stockfish 19 Lite single-threaded WASM,
+under GPLv3. The build publishes the selected engine, license, corresponding
+source archive, and neural-network material alongside the page. Preserve those
+materials and required notices when redistributing the generated website.
 
-The desktop app and broadcast generator import python-chess, licensed under
-GPL-3.0-or-later. The BSD license of original project code is GPL-compatible;
-distribution of a combined application must also satisfy the applicable GPL terms.
-
-- Source and license: https://github.com/niklasf/python-chess
-- Installed chess version: 1.11.2 (python-chess metapackage: 1.999)
-
-## Stockfish
-
-Stockfish is a separate UCI engine under GPLv3. The existing bundled Linux binary
-identifies itself as Stockfish 17.1. Its license is in stockfish/COPYING.txt.
-
+- Package: https://www.npmjs.com/package/stockfish/v/19.0.1
+- Source: https://github.com/nmrugg/stockfish.js/tree/0d5dd7944f88c817c07a26bc4fb1905d5f9c46d6
 - Upstream: https://github.com/official-stockfish/Stockfish
-- Version source: https://github.com/official-stockfish/Stockfish/tree/sf_17.1
+- Build/provenance checks: `scripts/build-web.mjs`
+- Generated downloadable material: `web/vendor/sources.html`
+- Generated artifact checksums: `web/vendor/manifest.json`
 
-A version tag alone does not establish that it is the exact corresponding source
-for an arbitrary prebuilt binary. Before redistributing the bundled binary, verify
-its provenance and supply the corresponding source/build material required by GPLv3,
-or obtain Stockfish separately through the operating-system package manager.
-PESC-I's BSD license does not apply to the Stockfish binary.
+The npm package includes other engine variants. Only the Lite single-threaded
+pair is published by this build. This branch does not ship a native desktop engine.
 
+## chess.js
+
+Chess rules use chess.js 1.4.0, licensed under BSD-2-Clause.
+
+- Source: https://github.com/jhlywa/chess.js/tree/v1.4.0
+
+The build copies its license into the generated vendor directory. Keep that
+notice with redistributed builds. See the generated source/license page for
+the exact download links.

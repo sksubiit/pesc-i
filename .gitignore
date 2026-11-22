@@ -1,21 +1,7 @@
-# Python / environments
-__pycache__/
-*.py[cod]
-*.egg-info/
-.venv/
-venv/
-myenv/
-build/
-dist/
-.pytest_cache/
-.ruff_cache/
-
-# Local credentials / preferences
+node_modules/
+web/vendor/
 .env
 .env.*
 !.env.example
-.envrc
-
-# Editors / OS
-.vscode/
 .DS_Store
+.vscode/

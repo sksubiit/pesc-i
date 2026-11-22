@@ -1,284 +1,85 @@
-# PESC-I
+# PESC-I browser chess
 
-### Good moves. Better questions.
+Two Stockfish engines, one board, no hosting bill for a game server.
 
-A desktop chess board with **Stockfish analysis** and optional **LLM explanations**.
-Play against Stockfish, share a board with a friend, or watch two very stubborn
-calculators negotiate. After each move, see the evaluation, a suggested continuation,
-and a short explanation.
+This is the **web branch**: a static, browser-only Stockfish self-play page.
+Each visitor runs their own match on their own device. The
+[main branch](https://github.com/sksubiit/pesc-i/tree/main) contains the separate
+Python desktop GUI with optional LLM commentary.
 
-Stockfish does the chess. Your chosen language model puts words around it.
-No model server or API key is required to play.
+[![Illustration of the browser board](docs/browser-board-preview.svg)](https://sksubiit.github.io/pesc-i/)
 
-![PESC-I board with Stockfish analysis](docs/board.png)
+[Open the demo](https://sksubiit.github.io/pesc-i/) once it has been published.
+The README image is a static illustration; GitHub Markdown cannot run a live board.
 
-## Start playing
+## Run locally
 
-Python 3.10+ and a graphical desktop are required. On Ubuntu / WSL:
-
-```bash
-sudo apt update
-sudo apt install python3-venv python3-tk stockfish fonts-dejavu-core
-cd pesc-i
-bash scripts/setup.sh
-source .venv/bin/activate
-pesc-i
-```
-
-Clone this repository first if you haven't already. Run these commands in your
-Linux / WSL terminal. WSL needs WSLg (GUI support); SSH and headless terminals need
-a graphical display. You can also launch with `python run_gui.py`.
-
-The setup script installs the app into a project-local `.venv`. To rebuild it:
+Install Node.js 20 or newer, then:
 
 ```bash
-bash scripts/setup.sh --recreate
-source .venv/bin/activate
-pesc-i
+git clone --depth 1 --branch web https://github.com/sksubiit/pesc-i.git pesc-i-web
+cd pesc-i-web
+npm ci --include=dev --ignore-scripts --no-audit --no-fund
+npm run build:web
+npm start
 ```
 
-`--recreate` clears this checkout's `.venv`, including packages you installed there.
-It leaves the repository and your saved app preferences alone.
+For a fork, replace the clone URL with your repository URL.
+Open the address printed by the launcher, normally http://127.0.0.1:8000/.
+Busy ports are skipped automatically; choose another starting port with
+`npm start -- --port 8080`. Use HTTP rather than opening index.html directly:
+Workers and WebAssembly need a web origin.
 
-Stockfish is resolved in this order:
-
-1. The executable named by `STOCKFISH_PATH`.
-2. A system installation (`stockfish` on PATH or `/usr/games/stockfish`).
-3. The legacy bundled Linux x86-64 binary in `stockfish/stockfish`.
-
-Prefer the system package. On another platform, install Tk and a compatible
-Stockfish executable, create a venv with `python -m venv .venv`, install with
-`python -m pip install -e .`, and set `STOCKFISH_PATH` if needed. For example:
-
-```bash
-export STOCKFISH_PATH=/absolute/path/to/stockfish
-pesc-i
-```
+No Python, venv, native Stockfish installation, API key, or model server is needed.
+The first build downloads pinned dependencies and verified engine source/network
+material. During play, computation stays in the browser.
 
 ## At the board
 
-- **Play Stockfish** — choose White or Black. Playing Black lets Stockfish open.
-- **Local two-player** — both players use the same board.
-- **Watch Stockfish** — engine versus engine; use Pause / Resume to control the pace.
+Pause stops the engine workers; Resume continues the existing game.
+New game applies the selected strength, search time, and move pace.
+Flip board changes the view, and Save PGN downloads the current game.
+Auto-next starts another game after a result. Hidden tabs pause automatically;
+press Resume when you return. Closing the page stops its computation.
 
-Click a piece, then a highlighted destination. Promotions offer queen, rook,
-bishop, or knight. Gold squares show the previous move; **Hint** highlights an
-engine suggestion. **Flip board** changes the view.
+The engine is **Stockfish 19 Lite WASM**, from `stockfish@19.0.1`, single-threaded.
+Lite trades playing strength for a small download. Strength caps are approximate.
+The displayed score is from White's perspective for the last search, before the move.
+Visitors are not synchronized; refreshing starts a new game.
 
-**New game**, changing the mode, or changing your playing side starts a fresh board.
-**Undo** returns to your turn against Stockfish; it takes back one move in the
-other modes. Undo pauses a watched game.
+## Publish
 
-The right panel shows:
+The deployment workflow lives **only on main**, at
+`.github/workflows/pages.yml`. It explicitly checks out **web**, builds and tests
+it, then uploads only the static `web/` directory.
 
-- Whose turn it is, check, and the final result.
-- Stockfish's evaluation in pawns: **positive favors White**, negative favors Black.
-  Mate scores name the winning side.
-- A legal continuation from the position **after** the move.
-- Engine notes, followed by the selected model's explanation.
+Push both branches to the same repository. Keep main as the default branch,
+choose **GitHub Actions** in Settings → Pages, then run
+**Deploy web branch to GitHub Pages** from main in the Actions tab.
+A push to web alone does not deploy: run the workflow after each desired update.
 
-Analysis and network requests run in the background. A slow model doesn't stop
-you using the controls: **Continue without explanation** skips that move's prose.
-Skipped or reset results are discarded; an already-sent request may still finish
-on the server. Automatic play waits for each explanation so it doesn't flood a
-local model with requests.
+See the [deployment guide on main](https://github.com/sksubiit/pesc-i/blob/main/docs/deployment.md).
+For forks, use the guide on your own main branch and your own Actions/Pages settings.
+The usual project URL is `https://OWNER.github.io/REPOSITORY/`.
+The website needs no always-running service; visitors supply the engine compute.
 
-## Choose a commentator
+To disable startup for new sessions, set `ENABLED = false` in
+`web/config.mjs`, push web, then deploy again. Existing sessions must stop or refresh.
+Unpublish Pages in repository settings to stop serving the page entirely.
 
-Open **Commentary setup**, choose a provider, select a discovered model (or type its
-exact ID), and click **Apply commentary settings**. Settings apply to the next move.
-The active provider is displayed separately from the settings being edited.
-
-| Provider                   | Base URL                                            | Model discovery                       |
-| -------------------------- | --------------------------------------------------- | ------------------------------------- |
-| Engine notes (offline)     | None                                                | None needed                           |
-| LM Studio                  | `http://localhost:1234/v1`                        | `GET /v1/models`                    |
-| Ollama                     | `http://localhost:11434`                          | `GET /api/tags`                     |
-| Remote / OpenAI-compatible | Your provider's API base, usually ending in `/v1` | `GET /models` relative to that base |
-
-Local providers are checked when selected. **Find available models** refreshes the
-list after loading or downloading another model. Discovery lists what the server
-reports; it doesn't benchmark quality or guarantee that every listed model supports
-chat. Embedding models are filtered out by name.
-
-### LM Studio
-
-1. Install [LM Studio](https://lmstudio.ai/), download a chat/instruct model, and load it.
-2. Start the local server in LM Studio's Developer area.
-3. Select **LM Studio** in PESC-I. Check the URL, find models, choose one, and Apply.
-4. If you enabled server authentication, enter its token in the API key field.
-
-PESC-I uses LM Studio's documented [model listing](https://lmstudio.ai/docs/developer/openai-compat/models)
-and [OpenAI-compatible chat endpoint](https://lmstudio.ai/docs/developer/openai-compat).
-The listed models may include downloaded models available for just-in-time loading.
-
-### Ollama
-
-Install [Ollama](https://ollama.com/), then download a chat model you want to use:
+## Develop
 
 ```bash
-ollama pull <model-name>
-ollama list
-ollama serve
+npm test
 ```
 
-Replace `<model-name>` with an actual model ID. If Ollama is already running,
-you don't need another `ollama serve` process.
+Tests cover game control, UCI transport, rendering data, and real WASM self-play.
+They do not replace a visual check in a browser.
+See [browser behavior and source map](docs/browser-web.md).
 
-Select **Ollama**, find models, choose a downloaded model, and Apply.
-The app uses Ollama's native [model list](https://docs.ollama.com/api/tags)
-and [chat API](https://docs.ollama.com/api/chat); leave `/v1` off the Ollama base URL.
+Keep work on this branch. Do not merge the complete desktop tree into it.
+The long-term goal is Stockfish versus a recursively improving PESC-I engine;
+that learning engine is future work. The UCI adapter provides a starting seam.
 
-### Remote APIs
-
-Choose **Remote / OpenAI-compatible**, enter the provider's base URL and API key,
-and find models. If the service doesn't expose a model list, type the model ID
-from its documentation and Apply.
-
-The service must support **Chat Completions** with `model`, `messages`,
-`max_tokens`, and `temperature`. APIs that require another protocol or different
-parameters need an adapter; selecting a provider doesn't make all APIs compatible.
-
-Use the following base URLs with **Remote / OpenAI-compatible**. Enter the API
-key issued by that provider and choose a model available to your account.
-Do not append `/chat/completions`; the app adds that path automatically.
-
-| Provider | Base URL | Compatibility notes |
-| --- | --- | --- |
-| OpenAI | `https://api.openai.com/v1` | Default remote URL; choose a model that accepts the request parameters above. |
-| Google Gemini / AI Studio | `https://generativelanguage.googleapis.com/v1beta/openai/` | Use a Gemini API key and Google's OpenAI-compatible endpoint. |
-| Groq | `https://api.groq.com/openai/v1` | Use a Groq API key and a supported chat model. |
-| Mistral | `https://api.mistral.ai/openai/v1` | Dedicated OpenAI-compatible endpoint; currently documented as public preview. |
-| Anthropic / Claude | `https://api.anthropic.com/v1/` | Conditional compatibility; see below. |
-
-See the provider documentation for [Google Gemini](https://aistudio.google.com/docs/openai),
-[Groq](https://console.groq.com/docs/openai),
-[Mistral](https://docs.mistral.ai/inference/conversations/chat-completion), and
-[Anthropic](https://platform.claude.com/docs/en/cli-sdks-libraries/libraries/openai-sdk).
-These are configuration references, not a claim that every provider/model has
-been tested with PESC-I.
-
-The current remote client uses raw HTTP with bearer authentication, rather than
-a provider-specific SDK. Anthropic documents its compatibility layer for official
-OpenAI SDKs; some Anthropic keys also require an `anthropic-workspace-id` header,
-which this GUI does not currently support. A base URL alone is therefore not a
-guarantee that Claude requests will work.
-
-Model discovery can fail independently of chat generation. If **Find available
-models** fails, you can still enter an exact model ID manually. Model-specific
-parameters and response formats may require changes to the client.
-
-Keep **Ollama** selected for Ollama's native API and **LM Studio** for its local
-server. Use the remote option for the cloud providers above.
-
-You can supply the remote key through the masked field or `PESC_I_API_KEY` in the
-launching shell. Keys are kept in memory and are never written to preferences.
-Move facts and Stockfish scores are sent to the selected endpoint. Remote calls
-may incur the provider's normal charges. There is no automatic switch to a paid API.
-
-### Local server on Windows, board in WSL
-
-Try `localhost` first. If the Windows server is unreachable from WSL, use the
-Windows host address as seen from your WSL network. In the usual NAT configuration,
-`ip route show default` shows the gateway address; mirrored networking behaves
-differently. Do not assume the DNS nameserver is the Windows host.
-
-Change the URL in the app, for example `http://<windows-host>:1234/v1` or
-`http://<windows-host>:11434`. Configure the server to listen on a reachable
-interface and allow the connection through Windows Firewall on your private network.
-For Ollama, see its [network configuration guide](https://docs.ollama.com/faq).
-Only expose your model server to networks you trust.
-
-## About explanation quality
-
-**The current prompts are basic, somewhat vague, and experimental. Do not expect
-expert chess analysis from the LLM commentary.** Quality depends on the prompt,
-the supplied context, and the model—not just model size or whether it runs locally.
-
-Brief and Detailed currently use the same move facts and almost the same prompt:
-
-| Mode | Requested response | Maximum generated tokens |
-| --- | --- | ---: |
-| Brief | 1–2 clear, friendly sentences | 256 |
-| Detailed | 3–4 clear, friendly sentences | 512 |
-
-Detailed does not currently request a separate, deeper analysis. Both modes
-receive move facts, evaluations before/after, and a short Stockfish continuation;
-they do not receive the full board position, game history, or the best alternative
-before the move. A model may produce similar or identical text in both modes, and
-the requested sentence count is not enforced.
-
-Increasing the request timeout only gives the server longer to respond. It does
-not increase the token limit or ask for better analysis. Length settings are
-captured when a move is played and apply to that move's new explanation.
-
-The prompt is built in [commentator.py](src/voice/commentator.py), while
-[providers.py](src/voice/providers.py) sends the request and handles the response.
-Stockfish's numerical evaluation and legal continuation are separate from the
-model's interpretation.
-
-A language model can sound confident while being wrong. Smaller models are
-particularly fond of finding imaginary forks. PESC-I supplies concrete move facts,
-White-perspective scores, and a legal Stockfish continuation, with instructions
-to avoid unsupported tactical claims. This improves grounding; it does **not**
-turn a language model into a chess engine.
-
-Use a chat/instruct model that runs comfortably on your hardware. Try Brief first.
-The offline notes are always available and make fewer promises.
-Cold model loading can take longer than the request timeout. Reasoning models may
-also spend their token budget thinking and return no usable explanation; try a
-chat/instruct model instead. Ollama requests disable optional thinking for these
-short explanations. Failed requests,
-authentication errors, timeouts, and empty replies visibly fall back to engine
-notes. The board's evaluation always comes from Stockfish.
-
-Evaluations and move-loss estimates depend on the search budget; they are not
-certified move grades. Increase the engine time for a steadier analysis.
-“Voice” currently means written commentary, not synthesized audio.
-
-## Troubleshooting and development
-
-```bash
-source .venv/bin/activate
-python -m scripts.doctor
-bash scripts/check.sh
-# Optional linting
-python -m pip install -e '.[dev]'
-ruff check src tests scripts run_gui.py
-```
-
-Tests exercise real Stockfish analysis, local mock HTTP servers, and the Tk workflow.
-GUI tests skip on a headless machine; run under WSLg or `xvfb-run` to include them.
-Tests never call a paid model API.
-
-- **No window:** check WSLg / DISPLAY and that `python3-tk` is installed.
-- **Engine error:** check `STOCKFISH_PATH`, executable permissions, and architecture.
-- **No models:** start the server, load/pull a chat model, then refresh.
-- **Remote authentication or model error:** check the key, API base URL, and exact model ID.
-- **Long explanations:** shorten the response, adjust the timeout, or skip the prose.
-
-Preferences live at `~/.config/pesc-i/settings.json` (or under `XDG_CONFIG_HOME`).
-They restore as a draft; click Apply to enable the provider each session.
-Delete that file to reset preferences.
-
-Code is split into `src/engine` (Stockfish), `src/voice` (facts and provider clients),
-and `src/gui` (desktop layout and game flow). `run_gui.py` is a convenience launcher.
-The old `src/gui_tk.py` import remains a compatibility shim.
-
-The legacy bundled Stockfish identifies itself as 17.1. Stockfish is GPLv3 software;
-see [its license](stockfish/COPYING.txt) and [upstream source](https://github.com/official-stockfish/Stockfish/tree/sf_17.1).
-Use the upstream distribution with corresponding source and license notices when
-redistributing engine binaries.
-
-## License
-
-Original PESC-I code and assets use [BSD-3-Clause](LICENSE), allowing
-commercial use subject to its license-notice conditions. A repository credit is
-appreciated; it does not replace preserving the required notices.
-[Third-party notices](THIRD_PARTY_NOTICES.md) describe Stockfish and python-chess,
-which retain their GPL licenses.
-
-The desktop API key field is session-only. Apply does not save the key to disk.
-For the remote provider, `PESC_I_API_KEY` may be supplied by the launching process.
-The app does not automatically load `.env` files. Keep persistent secrets outside
-the repository, for example in an OS credential store or private launcher.
+Original PESC-I code is [BSD-3-Clause](LICENSE); third-party licenses still apply.
+See [third-party notices](THIRD_PARTY_NOTICES.md).

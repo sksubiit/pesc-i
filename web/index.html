@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Live Stockfish self-play in your browser. No server, API key, or recorded games.">
+  <meta name="color-scheme" content="dark">
+  <title>PESC-I · Stockfish self-play</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <header><a class="brand" href="./">PESC-I<span> / </span></a><span class="tagline">A small laboratory for the next move.</span><a href="https://github.com/sksubiit/pesc-i" class="source">Source ↗</a></header>
+  <main>
+    <section class="intro"><p class="eyebrow">LIVE SELF-PLAY · IN YOUR BROWSER</p><h1>Two engines.<br><em>One unfolding game.</em></h1><p>Stockfish against Stockfish, computed on your device.<br>Every visitor starts their own live game.</p></section>
+    <section class="arena" aria-label="Browser chess match">
+      <div>
+        <div class="player"><span class="avatar">S</span><div><strong id="black-name">Stockfish</strong><small>Black</small></div><span class="search-note">Lite · single-threaded WASM</span></div>
+        <div class="board-frame"><div id="board" class="board" role="img" aria-label="Chess starting position"></div><div id="board-message" class="board-message" hidden></div></div>
+        <div class="player"><span class="avatar white-avatar">S</span><div><strong id="white-name">Stockfish</strong><small>White</small></div><span class="search-note">Live moves, no recorded playlist</span></div>
+        <div class="controls"><button id="pause" disabled>Loading…</button><button id="new" disabled>New game</button><button id="flip">Flip board</button><a id="pgn" href="#" download="pesc-i.pgn">Save PGN ↓</a></div>
+        <p class="device-note">Uses your device's CPU. Pause or close the page to stop.<br>Hidden tabs pause automatically; Resume starts them again.</p>
+      </div>
+      <aside>
+        <div class="panel-top"><span class="eyebrow">ON THE BOARD</span><span id="connection" class="badge">Loading</span></div>
+        <h2 id="turn">Taking our seats.</h2><p id="detail" class="muted">Preparing the browser engines.</p>
+        <div class="evaluation"><span class="eyebrow">LAST SEARCH · WHITE’S VIEW</span><strong id="eval">—</strong><div class="track"><span id="fill"></span></div><small>Positive favors White; negative favors Black.<br>Estimate from the position searched before the last move.</small></div>
+        <div class="last"><span class="eyebrow">LAST MOVE</span><strong id="last">—</strong><p id="note" class="muted">No commentary. Just the board and its next question.</p></div>
+        <div class="settings">
+          <label>White strength<select id="white"><option value="full">Full (Lite engine)</option><option value="2200">2200 cap</option><option value="1800">1800 cap</option><option value="1500">1500 cap</option><option value="1320">1320 cap</option></select></label>
+          <label>Black strength<select id="black"><option value="full">Full (Lite engine)</option><option value="2200">2200 cap</option><option value="1800">1800 cap</option><option value="1500">1500 cap</option><option value="1320">1320 cap</option></select></label>
+          <label>Think time<select id="think"><option value="100">0.1 seconds</option><option value="200" selected>0.2 seconds</option><option value="500">0.5 seconds</option><option value="1000">1 second</option><option value="2000">2 seconds</option></select></label>
+          <label>Move delay<select id="pace"><option value="500">0.5 seconds</option><option value="900" selected>0.9 seconds</option><option value="1500">1.5 seconds</option></select></label>
+          <label class="auto"><input type="checkbox" id="auto" checked> Start another game when this one ends</label>
+        </div>
+        <p class="settings-note">Strength and timing changes apply with New game. Lite-engine strength caps are approximate.</p>
+        <span class="eyebrow">THE GAME SO FAR</span><ol id="moves" class="moves" aria-label="Moves played"></ol>
+        <p id="status" class="status" role="status">Loading the chess rules and engine assets…</p>
+      </aside>
+    </section>
+    <section class="research"><p class="eyebrow">PREDICTION → DECISION → FEEDBACK</p><blockquote>Imagine many futures.<br>Commit to one move.</blockquote><div><p>Today, Stockfish plays itself. The longer experiment is PESC-I: learning representations, imagining futures, and improving through play.</p><p>The learning engine is planned. These matches do not train one. First, a board that works; then, a challenger that learns.</p></div></section>
+  </main>
+  <footer><span>PESC-I · Predict. Decide. Learn.</span><a href="./vendor/sources.html">Engine source &amp; licenses ↗</a><span>Original code: BSD-3-Clause · Stockfish: GPLv3</span></footer>
+  <noscript><p>This browser chess game needs JavaScript and WebAssembly enabled.</p></noscript>
+</body>
+</html>

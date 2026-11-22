@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="720" viewBox="0 0 1000 720" role="img" aria-labelledby="title desc">
+<title id="title">PESC-I browser Stockfish preview illustration</title>
+<desc id="desc">Stockfish versus Stockfish in the browser. A static illustration; open the page for actual live moves.</desc>
+<rect width="1000" height="720" fill="#111d1b"/>
+<g font-family="Arial,sans-serif" fill="#edeade">
+<text x="30" y="43" font-size="25" font-weight="bold">PESC-I /</text>
+<text x="185" y="41" font-size="12" fill="#a4b5a7">Live self-play, computed on your device.</text>
+<text x="30" y="105" font-family="Georgia,serif" font-size="38">Two engines. One unfolding game.</text>
+<text x="30" y="141" font-size="13" fill="#a4b5a7">Stockfish 19 Lite WASM · No backend, API key, or recorded games</text>
+<rect x="26" y="165" width="508" height="508" fill="#28392c" stroke="#526343"/>
+<rect x="40" y="179" width="60" height="60" fill="#dde3cd"/>
+<text x="70" y="224" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#1c3529" stroke="#3b4d33" stroke-width=".5">♜</text>
+<rect x="100" y="179" width="60" height="60" fill="#7f9673"/>
+<text x="130" y="224" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#1c3529" stroke="#3b4d33" stroke-width=".5">♞</text>
+<rect x="160" y="179" width="60" height="60" fill="#dde3cd"/>
+<text x="190" y="224" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#1c3529" stroke="#3b4d33" stroke-width=".5">♝</text>
+<rect x="220" y="179" width="60" height="60" fill="#7f9673"/>
+<text x="250" y="224" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#1c3529" stroke="#3b4d33" stroke-width=".5">♛</text>
+<rect x="280" y="179" width="60" height="60" fill="#dde3cd"/>
+<text x="310" y="224" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#1c3529" stroke="#3b4d33" stroke-width=".5">♚</text>
+<rect x="340" y="179" width="60" height="60" fill="#7f9673"/>
+<text x="370" y="224" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#1c3529" stroke="#3b4d33" stroke-width=".5">♝</text>
+<rect x="400" y="179" width="60" height="60" fill="#dde3cd"/>
+<text x="430" y="224" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#1c3529" stroke="#3b4d33" stroke-width=".5">♞</text>
+<rect x="460" y="179" width="60" height="60" fill="#7f9673"/>
+<text x="490" y="224" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#1c3529" stroke="#3b4d33" stroke-width=".5">♜</text>
+<rect x="40" y="239" width="60" height="60" fill="#7f9673"/>
+<text x="70" y="284" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#1c3529" stroke="#3b4d33" stroke-width=".5">♟</text>
+<rect x="100" y="239" width="60" height="60" fill="#dde3cd"/>
+<text x="130" y="284" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#1c3529" stroke="#3b4d33" stroke-width=".5">♟</text>
+<rect x="160" y="239" width="60" height="60" fill="#7f9673"/>
+<text x="190" y="284" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#1c3529" stroke="#3b4d33" stroke-width=".5">♟</text>
+<rect x="220" y="239" width="60" height="60" fill="#dde3cd"/>
+<text x="250" y="284" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#1c3529" stroke="#3b4d33" stroke-width=".5">♟</text>
+<rect x="280" y="239" width="60" height="60" fill="#7f9673"/>
+<text x="310" y="284" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#1c3529" stroke="#3b4d33" stroke-width=".5">♟</text>
+<rect x="340" y="239" width="60" height="60" fill="#dde3cd"/>
+<text x="370" y="284" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#1c3529" stroke="#3b4d33" stroke-width=".5">♟</text>
+<rect x="400" y="239" width="60" height="60" fill="#7f9673"/>
+<text x="430" y="284" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#1c3529" stroke="#3b4d33" stroke-width=".5">♟</text>
+<rect x="460" y="239" width="60" height="60" fill="#dde3cd"/>
+<text x="490" y="284" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#1c3529" stroke="#3b4d33" stroke-width=".5">♟</text>
+<rect x="40" y="299" width="60" height="60" fill="#dde3cd"/>
+<rect x="100" y="299" width="60" height="60" fill="#7f9673"/>
+<rect x="160" y="299" width="60" height="60" fill="#dde3cd"/>
+<rect x="220" y="299" width="60" height="60" fill="#7f9673"/>
+<rect x="280" y="299" width="60" height="60" fill="#dde3cd"/>
+<rect x="340" y="299" width="60" height="60" fill="#7f9673"/>
+<rect x="400" y="299" width="60" height="60" fill="#dde3cd"/>
+<rect x="460" y="299" width="60" height="60" fill="#7f9673"/>
+<rect x="40" y="359" width="60" height="60" fill="#7f9673"/>
+<rect x="100" y="359" width="60" height="60" fill="#dde3cd"/>
+<rect x="160" y="359" width="60" height="60" fill="#7f9673"/>
+<rect x="220" y="359" width="60" height="60" fill="#dde3cd"/>
+<rect x="280" y="359" width="60" height="60" fill="#7f9673"/>
+<rect x="340" y="359" width="60" height="60" fill="#dde3cd"/>
+<rect x="400" y="359" width="60" height="60" fill="#7f9673"/>
+<rect x="460" y="359" width="60" height="60" fill="#dde3cd"/>
+<rect x="40" y="419" width="60" height="60" fill="#dde3cd"/>
+<rect x="100" y="419" width="60" height="60" fill="#7f9673"/>
+<rect x="160" y="419" width="60" height="60" fill="#dde3cd"/>
+<rect x="220" y="419" width="60" height="60" fill="#7f9673"/>
+<rect x="280" y="419" width="60" height="60" fill="#dde3cd"/>
+<rect x="340" y="419" width="60" height="60" fill="#7f9673"/>
+<rect x="400" y="419" width="60" height="60" fill="#dde3cd"/>
+<rect x="460" y="419" width="60" height="60" fill="#7f9673"/>
+<rect x="40" y="479" width="60" height="60" fill="#7f9673"/>
+<rect x="100" y="479" width="60" height="60" fill="#dde3cd"/>
+<rect x="160" y="479" width="60" height="60" fill="#7f9673"/>
+<rect x="220" y="479" width="60" height="60" fill="#dde3cd"/>
+<rect x="280" y="479" width="60" height="60" fill="#7f9673"/>
+<rect x="340" y="479" width="60" height="60" fill="#dde3cd"/>
+<rect x="400" y="479" width="60" height="60" fill="#7f9673"/>
+<rect x="460" y="479" width="60" height="60" fill="#dde3cd"/>
+<rect x="40" y="539" width="60" height="60" fill="#dde3cd"/>
+<text x="70" y="584" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#fffbed" stroke="#3b4d33" stroke-width=".5">♟</text>
+<rect x="100" y="539" width="60" height="60" fill="#7f9673"/>
+<text x="130" y="584" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#fffbed" stroke="#3b4d33" stroke-width=".5">♟</text>
+<rect x="160" y="539" width="60" height="60" fill="#dde3cd"/>
+<text x="190" y="584" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#fffbed" stroke="#3b4d33" stroke-width=".5">♟</text>
+<rect x="220" y="539" width="60" height="60" fill="#7f9673"/>
+<text x="250" y="584" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#fffbed" stroke="#3b4d33" stroke-width=".5">♟</text>
+<rect x="280" y="539" width="60" height="60" fill="#dde3cd"/>
+<text x="310" y="584" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#fffbed" stroke="#3b4d33" stroke-width=".5">♟</text>
+<rect x="340" y="539" width="60" height="60" fill="#7f9673"/>
+<text x="370" y="584" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#fffbed" stroke="#3b4d33" stroke-width=".5">♟</text>
+<rect x="400" y="539" width="60" height="60" fill="#dde3cd"/>
+<text x="430" y="584" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#fffbed" stroke="#3b4d33" stroke-width=".5">♟</text>
+<rect x="460" y="539" width="60" height="60" fill="#7f9673"/>
+<text x="490" y="584" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#fffbed" stroke="#3b4d33" stroke-width=".5">♟</text>
+<rect x="40" y="599" width="60" height="60" fill="#7f9673"/>
+<text x="70" y="644" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#fffbed" stroke="#3b4d33" stroke-width=".5">♜</text>
+<rect x="100" y="599" width="60" height="60" fill="#dde3cd"/>
+<text x="130" y="644" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#fffbed" stroke="#3b4d33" stroke-width=".5">♞</text>
+<rect x="160" y="599" width="60" height="60" fill="#7f9673"/>
+<text x="190" y="644" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#fffbed" stroke="#3b4d33" stroke-width=".5">♝</text>
+<rect x="220" y="599" width="60" height="60" fill="#dde3cd"/>
+<text x="250" y="644" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#fffbed" stroke="#3b4d33" stroke-width=".5">♛</text>
+<rect x="280" y="599" width="60" height="60" fill="#7f9673"/>
+<text x="310" y="644" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#fffbed" stroke="#3b4d33" stroke-width=".5">♚</text>
+<rect x="340" y="599" width="60" height="60" fill="#dde3cd"/>
+<text x="370" y="644" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#fffbed" stroke="#3b4d33" stroke-width=".5">♝</text>
+<rect x="400" y="599" width="60" height="60" fill="#7f9673"/>
+<text x="430" y="644" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#fffbed" stroke="#3b4d33" stroke-width=".5">♞</text>
+<rect x="460" y="599" width="60" height="60" fill="#dde3cd"/>
+<text x="490" y="644" text-anchor="middle" font-family="DejaVu Sans,serif" font-size="48" fill="#fffbed" stroke="#3b4d33" stroke-width=".5">♜</text>
+<rect x="565" y="165" width="405" height="508" rx="6" fill="#1a2924" stroke="#34473a"/>
+<text x="589" y="203" font-size="11" fill="#a4b5a7" letter-spacing="2">ON THE BOARD</text>
+<text x="589" y="251" font-family="Georgia,serif" font-size="30">White to move.</text>
+<text x="589" y="282" font-size="12" fill="#a4b5a7">Each visitor starts a new game.</text>
+<path d="M589 311H946" stroke="#34473a"/>
+<text x="589" y="344" font-size="11" fill="#a4b5a7">PAUSE · RESUME · NEW GAME · SAVE PGN</text>
+<text x="589" y="390" font-size="14">White strength      Full (Lite engine)</text>
+<text x="589" y="426" font-size="14">Black strength      Full (Lite engine)</text>
+<text x="589" y="462" font-size="14">Think time            0.2 seconds</text>
+<path d="M589 492H946" stroke="#34473a"/>
+<text x="589" y="539" font-family="Georgia,serif" font-size="25" fill="#c4d696">Imagine many futures.</text>
+<text x="589" y="574" font-family="Georgia,serif" font-size="25" fill="#c4d696">Commit to one move.</text>
+<text x="589" y="633" font-size="11" fill="#a4b5a7">Next: a PESC-I challenger that learns.</text>
+<text x="30" y="703" font-size="10" fill="#a4b5a7">Static preview illustration · open the browser demo for live play.</text>
+</g></svg>
